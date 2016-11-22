@@ -1,7 +1,7 @@
 
 generate_obs_YXG <- function(Gcolmn = 6,Xcolmn = 8,actvXcolmn = 4,actvGcolmn = 3,
 															laty,latx,latG1H1,latG2H2,latG,var_obs_x = 1,var_obs_h = 1,
-															D = 0,p = 0.2,phat = 0.2,
+															D = 0,Gprob = 0.2,gprob = 0.2,
 															Xcenter = FALSE,Xmean = c("obsmean","latmean"),
 															Gcenter = FALSE,Gmean = c("obsmean","latmean")){
   set.seed(123456)
@@ -17,8 +17,8 @@ generate_obs_YXG <- function(Gcolmn = 6,Xcolmn = 8,actvXcolmn = 4,actvGcolmn = 3
   	h <- actvGcolmn
   
 	  ######## generate G matrix ############
-		Pg11 <- phat + D / p
-		Pg10 <- phat - D / (1-p)
+		Pg11 <- gprob + D / Gprob
+		Pg10 <- gprob - D / (1 - Gprob)
 		
 		g1 <- matrix(0,n,1)
 		g2 <- matrix(0,n,1)
@@ -60,6 +60,7 @@ generate_obs_YXG <- function(Gcolmn = 6,Xcolmn = 8,actvXcolmn = 4,actvGcolmn = 3
 	  ########## generate X matrix ##########
 	  X <- apply(latx,1,function(x){c(rnorm(m,x[1],sqrt(var_obs_x)),rnorm(q-m,x[2],sqrt(var_obs_h)))})
 	  X <- t(X)
+	  
 	  if(Xcenter){
 	  	if(Xmean == "obsmean"){
 	  		X <- demean(X)
