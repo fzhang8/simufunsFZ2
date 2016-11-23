@@ -20,33 +20,38 @@ generate_obs_YXG <- function(Gcolmn = 6,Xcolmn = 8,actvXcolmn = 4,actvGcolmn = 3
 		Pg11 <- gprob + D / Gprob
 		Pg10 <- gprob - D / (1 - Gprob)
 		
-		g1 <- matrix(0,n,1)
-		g2 <- matrix(0,n,1)
-		for(i in 1:h){
-			g1col <- sapply(latG1H1[,1],function(x){ifelse(x == 1,rbinom(1,1,Pg11),rbinom(1,1,Pg10))})
-			g2col <- sapply(latG2H2[,1],function(x){ifelse(x == 1,rbinom(1,1,Pg11),rbinom(1,1,Pg10))})
-			g1col <- matrix(g1col,,1)
-			g2col <- matrix(g2col,,1)
-			g1 <- cbind(g1,g1col)
-			g2 <- cbind(g2,g2col)
-		}
-		g1 <- matrix(g1[,-1],n,)
-		g2 <- matrix(g2[,-1],n,)
-
-		h1 <- matrix(0,n,1)
-		h2 <- matrix(0,n,1)
-		for(i in 1:(p-h)){
-			h1col <- sapply(latG1H1[,2],function(x){ifelse(x == 1,rbinom(1,1,Pg11),rbinom(1,1,Pg10))})
-			h2col <- sapply(latG2H2[,2],function(x){ifelse(x == 1,rbinom(1,1,Pg11),rbinom(1,1,Pg10))})
-			h1col <- matrix(h1col,,1)
-			h2col <- matrix(h2col,,1)
-			h1 <- cbind(h1,h1col)
-			h2 <- cbind(h2,h2col)
-		}
-		h1 <- matrix(h1[,-1],n,)
-		h2 <- matrix(h2[,-1],n,)
-
-	  G <- cbind(g1,h1) + cbind(g2,h2)
+		Grank <- 0
+		while(Grank != p){
+  		g1 <- matrix(0,n,1)
+  		g2 <- matrix(0,n,1)
+  		for(i in 1:h){
+  			g1col <- sapply(latG1H1[,1],function(x){ifelse(x == 1,rbinom(1,1,Pg11),rbinom(1,1,Pg10))})
+  			g2col <- sapply(latG2H2[,1],function(x){ifelse(x == 1,rbinom(1,1,Pg11),rbinom(1,1,Pg10))})
+  			g1col <- matrix(g1col,,1)
+  			g2col <- matrix(g2col,,1)
+  			g1 <- cbind(g1,g1col)
+  			g2 <- cbind(g2,g2col)
+  		}
+  		g1 <- matrix(g1[,-1],n,)
+  		g2 <- matrix(g2[,-1],n,)
+  
+  		h1 <- matrix(0,n,1)
+  		h2 <- matrix(0,n,1)
+  		for(i in 1:(p-h)){
+  			h1col <- sapply(latG1H1[,2],function(x){ifelse(x == 1,rbinom(1,1,Pg11),rbinom(1,1,Pg10))})
+  			h2col <- sapply(latG2H2[,2],function(x){ifelse(x == 1,rbinom(1,1,Pg11),rbinom(1,1,Pg10))})
+  			h1col <- matrix(h1col,,1)
+  			h2col <- matrix(h2col,,1)
+  			h1 <- cbind(h1,h1col)
+  			h2 <- cbind(h2,h2col)
+  		}
+  		h1 <- matrix(h1[,-1],n,)
+  		h2 <- matrix(h2[,-1],n,)
+  
+  	  G <- cbind(g1,h1) + cbind(g2,h2)
+  	  Grank <- qr(G)$rank
+	  }
+	  
 	  
 	  if(Gcenter){
 	  	if(Gmean == "obsmean"){
