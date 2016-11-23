@@ -81,6 +81,6 @@ generate_obs_YXG <- function(Gcolmn = 6,Xcolmn = 8,actvXcolmn = 4,actvGcolmn = 3
 	
   
 
-  return(list(Y = Y,X = X,G = G))
+  return(list(Y = Y,X = X,G = G,Pg11=Pg11,Pg10=Pg10))
 }
 
