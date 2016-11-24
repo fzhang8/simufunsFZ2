@@ -4,7 +4,7 @@ generate_obs_YXG <- function(Gcolmn = 6,Xcolmn = 8,actvXcolmn = 4,actvGcolmn = 3
 															D = 0,Gprob = 0.2,gprob = 0.2,
 															Xcenter = FALSE,Xmean = c("obsmean","latmean"),
 															Gcenter = FALSE,Gmean = c("obsmean","latmean")){
-  set.seed(123456)
+  set.seed(12345678)
   Xmean <- tolower(Xmean)
   Xmean <- match.arg(Xmean)
   Gmean <- tolower(Gmean)

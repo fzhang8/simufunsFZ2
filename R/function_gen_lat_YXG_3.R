@@ -1,7 +1,7 @@
 
 simuLatYXG <- function(betay_xg = 3,betay_gx = 3,betax_g = 3, betax_h  =  3, 
 												n = 20,var_yxg = 1,var_xg = 1,var_xh = 1, Gprob = 0.2){
-		set.seed(123456)
+		set.seed(12345678)
 		
 		###### latent G ###########  
 		all <- rbinom(4*n,1,Gprob)
