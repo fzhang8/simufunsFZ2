@@ -1,9 +1,9 @@
 
 generate_obs_YXG <- function(Gcolmn = 6,Xcolmn = 8,actvXcolmn = 4,actvGcolmn = 3,
 															laty,latx,latG1H1,latG2H2,latG,var_obs_x = 1,var_obs_h = 1,
-															D = 0,Gprob = 0.2,gprob = 0.2,
-															Xcenter = FALSE,Xmean = c("obsmean","latmean"),
-															Gcenter = FALSE,Gmean = c("obsmean","latmean")){
+															D = 0,Gprob = 0.2,gprob = 0.2, betax_g = 3, betax_h  =  3,
+															Xcenter = FALSE,Xmean = c("obsmean","latmean","expect"),
+															Gcenter = FALSE,Gmean = c("obsmean","latmean","expect")){
   set.seed(12345678)
   Xmean <- tolower(Xmean)
   Xmean <- match.arg(Xmean)
@@ -56,8 +56,10 @@ generate_obs_YXG <- function(Gcolmn = 6,Xcolmn = 8,actvXcolmn = 4,actvGcolmn = 3
 	  if(Gcenter){
 	  	if(Gmean == "obsmean"){
 	  		G <- demean(G)
-	  	}else{
+	  	}else if(Gmean == "latmean"){
 	  		G <- demean(G,c(rep(colMeans(latG)[1],h),rep(colMeans(latG)[2],p-h)))
+	  	}else{ # expectation
+	  		G <- demean(G,c(rep(Gprob * 2,h),rep(Gprob * 2,p-h)))
 	  	}
 	  }
 	  #######################################
@@ -69,8 +71,10 @@ generate_obs_YXG <- function(Gcolmn = 6,Xcolmn = 8,actvXcolmn = 4,actvGcolmn = 3
 	  if(Xcenter){
 	  	if(Xmean == "obsmean"){
 	  		X <- demean(X)
-	  	}else{
+	  	}else if(Xmean == "latmean"){
 	  		X <- demean(X,c(rep(colMeans(latx)[1],m),rep(colMeans(latx)[2],q-m)))
+	  	}else{ # expectation
+	  		X <- demean(X,c(rep(betax_g * Gprob * 2,m),rep(betax_h * Gprob * 2,q-m)))
 	  	}
 	  }
 	  #######################################
